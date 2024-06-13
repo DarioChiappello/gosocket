@@ -1,6 +1,7 @@
 package gosocket
 
 import (
+	"encoding/json"
 	"net"
 	"sync"
 )
@@ -31,6 +32,23 @@ func (s *Socket) Emit(event string, data interface{}) {
 	if listeners, exists := s.listeners[event]; exists {
 		for _, listener := range listeners {
 			go listener(data)
+		}
+	}
+}
+
+func (s *Socket) Listen() {
+	buffer := make([]byte, 1024)
+	for {
+		n, err := s.conn.Read(buffer)
+		if err != nil {
+			return
+		}
+		message := buffer[:n]
+		var received map[string]interface{}
+		if err := json.Unmarshal(message, &received); err == nil {
+			if event, exists := received["event"].(string); exists {
+				s.Emit(event, received["data"])
+			}
 		}
 	}
 }

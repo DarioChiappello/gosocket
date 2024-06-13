@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/tuusuario/gosocket"
+	"github.com/DarioChiappello/gosocket"
 )
 
 func main() {
