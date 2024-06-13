@@ -17,7 +17,7 @@ func main() {
 		fmt.Printf("New message: %+v\n", data)
 	})
 
-	go client.Socket.listen()
+	go client.Listen()
 
 	client.Send("message", map[string]interface{}{
 		"text": "Hello World",
